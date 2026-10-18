@@ -119,7 +119,7 @@
 
       <h3>Build video</h3>
       <p>The whole build, start to finish, in about an hour (timelapses included).</p>
-      <a class="yt" href="https://www.youtube.com/watch?v=WVpbPrM2bhM" data-id="WVpbPrM2bhM" target="_blank" rel="noopener" aria-label="one hour of synth talk and timelapses to cure your attention span"><img src="https://img.youtube.com/vi/WVpbPrM2bhM/hqdefault.jpg" alt="Thumbnail: one hour of synth talk and timelapses to cure your attention span" loading="lazy"><span class="yt-play">▶ Play on YouTube</span></a>
+      <a class="yt" href="https://www.youtube.com/watch?v=WVpbPrM2bhM" data-id="WVpbPrM2bhM" target="_blank" rel="noopener" aria-label="one hour of synth talk and timelapses to cure your attention span"><img src="https://i.ytimg.com/vi/WVpbPrM2bhM/maxresdefault.jpg" alt="Thumbnail: one hour of synth talk and timelapses to cure your attention span" loading="lazy"><span class="yt-play" aria-hidden="true"></span></a>
       <ul class="chapters">
           <li><a href="https://youtu.be/WVpbPrM2bhM?t=115">01:55</a>Synths vs. keyboards</li>
           <li><a href="https://youtu.be/WVpbPrM2bhM?t=185">03:05</a>First steps</li>
@@ -148,6 +148,20 @@
 </footer>
 
 <script>
+// Video thumbnails: ask YouTube for the full-HD (1280x720) thumbnail and step
+// down to smaller ones if a video doesn't have it (YouTube answers a missing
+// size with a tiny 120px placeholder).
+document.querySelectorAll("a.yt img").forEach(function (img) {
+  var next = { maxresdefault: "sddefault", sddefault: "hqdefault" };
+  function stepDown() {
+    var m = img.src.match(/\/(maxresdefault|sddefault)\.jpg$/);
+    if (m) img.src = img.src.replace(m[1] + ".jpg", next[m[1]] + ".jpg");
+  }
+  img.addEventListener("error", stepDown);
+  img.addEventListener("load", function () { if (img.naturalWidth <= 120) stepDown(); });
+  if (img.complete && img.naturalWidth > 0 && img.naturalWidth <= 120) stepDown();
+});
+
 // On the live site, clicking a video thumbnail plays it in place.
 // Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
 if (location.protocol.startsWith("http")) {
@@ -157,7 +171,7 @@ if (location.protocol.startsWith("http")) {
       var box = document.createElement("div");
       box.className = "yt";
       var f = document.createElement("iframe");
-      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1&rel=0&playsinline=1";
       f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
       f.allowFullscreen = true;
       f.referrerPolicy = "strict-origin-when-cross-origin";

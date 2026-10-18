@@ -44,7 +44,7 @@
 
   <article class="article">
     <div class="wrap">
-      <p>In spring 2023, I asked my grandparents if they happened to have a record player I could use before i went and bought a new one. They offered me a 1970s BSR turntable that they dug up from their basement, but it was in rough condition, so I repaired it and documented the process on my YouTube channel.</p>
+      <p>In spring 2023, I asked my grandparents if they happened to have a record player I could use before I went and bought a new one. They offered me a 1970s BSR turntable that they dug up from their basement, but it was in rough condition, so I repaired it and documented the process on my YouTube channel.</p>
 
       <h3>Initial condition</h3>
       <p>The power cable, the RCA cables, and the stylus were all rusted, and records skipped constantly. The platter was also slow to start, though it ran normally after a push.</p>
@@ -74,7 +74,7 @@
       <p>The turntable is in regular use in my basement workspace, and my collection has grown from a few records to several dozen albums. This project's results have seen constant use since I finished the repair. I love listening to albums on vinyl, and value how vinyl encourages listening to an album as a whole rather than promoting the shuffling of individual songs on streaming services.</p>
 
       <h3>Video</h3>
-      <a class="yt" href="https://www.youtube.com/watch?v=OfftXQWSyrU" data-id="OfftXQWSyrU" target="_blank" rel="noopener" aria-label="Repairing A 70s Record Player"><img src="https://img.youtube.com/vi/OfftXQWSyrU/hqdefault.jpg" alt="Thumbnail: Repairing A 70s Record Player" loading="lazy"><span class="yt-play">▶ Play on YouTube</span></a>
+      <a class="yt" href="https://www.youtube.com/watch?v=OfftXQWSyrU" data-id="OfftXQWSyrU" target="_blank" rel="noopener" aria-label="Repairing A 70s Record Player"><img src="https://i.ytimg.com/vi/OfftXQWSyrU/maxresdefault.jpg" alt="Thumbnail: Repairing A 70s Record Player" loading="lazy"><span class="yt-play" aria-hidden="true"></span></a>
       <ul class="chapters">
           <li><a href="https://youtu.be/OfftXQWSyrU?t=55">00:55</a>Initial observations</li>
           <li><a href="https://youtu.be/OfftXQWSyrU?t=150">02:30</a>Speaker setup</li>
@@ -98,6 +98,20 @@
 </footer>
 
 <script>
+// Video thumbnails: ask YouTube for the full-HD (1280x720) thumbnail and step
+// down to smaller ones if a video doesn't have it (YouTube answers a missing
+// size with a tiny 120px placeholder).
+document.querySelectorAll("a.yt img").forEach(function (img) {
+  var next = { maxresdefault: "sddefault", sddefault: "hqdefault" };
+  function stepDown() {
+    var m = img.src.match(/\/(maxresdefault|sddefault)\.jpg$/);
+    if (m) img.src = img.src.replace(m[1] + ".jpg", next[m[1]] + ".jpg");
+  }
+  img.addEventListener("error", stepDown);
+  img.addEventListener("load", function () { if (img.naturalWidth <= 120) stepDown(); });
+  if (img.complete && img.naturalWidth > 0 && img.naturalWidth <= 120) stepDown();
+});
+
 // On the live site, clicking a video thumbnail plays it in place.
 // Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
 if (location.protocol.startsWith("http")) {
@@ -107,7 +121,7 @@ if (location.protocol.startsWith("http")) {
       var box = document.createElement("div");
       box.className = "yt";
       var f = document.createElement("iframe");
-      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1&rel=0&playsinline=1";
       f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
       f.allowFullscreen = true;
       f.referrerPolicy = "strict-origin-when-cross-origin";

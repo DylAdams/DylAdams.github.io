@@ -248,15 +248,20 @@ figcaption { font-family: var(--mono); font-size: 0.74rem; color: var(--ink-soft
 .article p, .article li { max-width: none; }
 .band .lede { max-width: none; }
 
-/* YouTube: thumbnail that opens the video (embeds fail on local file:// pages) */
+/* YouTube: thumbnail that turns into the real player when clicked (on local file:// pages it opens YouTube instead) */
 .yt { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #111; }
-.yt img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; opacity: 0.92; transition: opacity 0.15s; }
-.yt:hover img { opacity: 1; }
+.yt img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+/* play button in YouTube's style: rounded red pill with a white triangle */
 .yt-play {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.75); color: #fff; font-family: var(--mono); font-size: 0.85rem;
-  padding: 0.6rem 1rem; border-radius: 4px; white-space: nowrap;
+  width: 68px; height: 48px; border-radius: 14px; background: rgba(33,33,33,0.8);
+  transition: background 0.15s;
 }
+.yt-play::before {
+  content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-40%, -50%);
+  border-style: solid; border-width: 11px 0 11px 19px; border-color: transparent transparent transparent #fff;
+}
+.yt:hover .yt-play, .yt:focus-visible .yt-play { background: #ff0033; }
 .yt iframe { width: 100%; height: 100%; border: 0; }
 .yt + .chapters { margin-top: 1rem; }
 
@@ -351,3 +356,10 @@ code { font-family: var(--mono); font-size: 0.85em; background: var(--tint); pad
   .about-one .wrap.about { grid-template-columns: 1fr; gap: 1.5rem; }
   .about-one aside { max-width: 15rem; }
 }
+
+/* pull quote (makerspace page) */
+.article blockquote.pull { margin: 2rem 0; padding: 0.2rem 0 0.2rem 1.25rem; border-left: 3px solid var(--accent); }
+.article blockquote.pull p { font-family: var(--serif-display, inherit); font-size: 1.15rem; font-style: italic; line-height: 1.5; margin: 0 0 0.5rem; }
+.article blockquote.pull .cite { font-family: var(--mono); font-style: normal; font-size: 0.78rem; color: var(--ink-soft); margin: 0; }
+.article .photo-credit { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-soft); margin: -0.6rem 0 1.5rem; }
+

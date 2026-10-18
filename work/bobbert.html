@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bobbert — Dylan Adams</title>
+  <meta name="description" content="Bobbert is a Discord music bot written in Python by Dylan Adams.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="p-bobbert">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Dylan Adams</a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#projects" aria-current="page">Work</a>
+      <a href="../about.html">About</a>
+      <a href="mailto:dadams@college.harvard.edu">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap crumb"><a href="../index.html#projects">← All work</a></div>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="label">Software</p>
+      <h1>Bobbert</h1>
+      <p class="lede">A Discord music bot for listening to music with friends on calls.</p>
+      <dl class="facts-row">
+        <div><dt>When</dt><dd>May 2022 – now</dd></div>
+        <div><dt>Built with</dt><dd>Python, asyncio, discord.py, yt-dlp, FFmpeg</dd></div>
+        <div><dt>Links</dt><dd><a href="https://github.com/DylAdams/Bobbert">Code</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <article class="article">
+    <div class="wrap">
+      <p>In 2022, I wrote a Discord bot so my friends and I could listen to music together on calls. Anyone in the voice channel can queue songs, skip, pause, go back, jump to any song in the queue, or slip in a song to play next.</p>
+
+      <table class="spec">
+        <tr><th>Size</th><td>About 840 lines of Python in five modules, 45 commits over four years</td></tr>
+        <tr><th>Libraries</th><td>discord.py, asyncio, yt-dlp, FFmpeg</td></tr>
+        <tr><th>Commands</th><td><code>join</code> <code>leave</code> <code>play</code> <code>add</code> <code>insert</code> <code>remove</code> <code>pause</code> <code>resume</code> <code>previous</code> <code>skip</code> <code>jump</code> <code>queue</code> <code>clear</code> <code>help</code>, most with short aliases</td></tr>
+        <tr><th>Runs on</th><td>My home server set up with a headless Ubuntu Linux install</td></tr>
+      </table>
+
+      <h3>How it works</h3>
+      <ul>
+        <li><b>Streaming, not downloading.</b> yt-dlp looks up a search or URL and returns a direct audio stream, which FFmpeg plays into the voice channel. FFmpeg’s reconnect options keep a stream going through short network drops.</li>
+        <li><b>Per-server state.</b> The queue, position in the queue, and playback state are stored per server ID, so different groups can use Bobbert at the same time without affecting each other.</li>
+        <li><b>A queue with history.</b> Songs stay in the queue after they play, and Bobbert tracks his position in it. That’s what makes <code>previous</code> and <code>jump</code> possible.</li>
+        <li><b>Threading.</b> The voice client calls back from a separate thread when a song ends, so that callback hands the next song back to the main asyncio event loop instead of playing it directly.</li>
+        <li><b>Housekeeping.</b> Bobbert leaves the channel after 10 minutes of silence or when everyone else leaves, posts embeds with each song’s title and thumbnail, logs errors with timestamps, and has a password-protected reboot command.</li>
+      </ul>
+
+      <h3>Maintenance</h3>
+      <p>Most of what I’ve learned from Bobbert came from keeping him alive. YouTube and Discord change things often, and when they do, something usually breaks. Over four years, I’ve:</p>
+      <ul>
+        <li>switched from youtube-dl to yt-dlp when youtube-dl stopped working (2023)</li>
+        <li>updated for breaking changes in discord.py (2023 and 2026)</li>
+        <li>rewritten a large part of the bot after YouTube changed its video formats (2026)</li>
+        <li>fixed queue bugs in <code>insert</code>, <code>remove</code>, and <code>resume</code> as my friends found them</li>
+      </ul>
+      <p>He’s still running today.</p>
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="More projects">
+    <div class="wrap"><a class="prev" href="cesyl.html"><p class="label">← Previous</p><span class="t">CESyL</span></a><a class="next" href="record-player.html"><p class="label">Next →</p><span class="t">Record player repair</span></a></div>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Dylan Adams · dadams@college.harvard.edu</span>
+    <span class="links"><a href="https://github.com/DylAdams">GitHub</a><a href="https://www.youtube.com/@dasma-tech">YouTube</a></span>
+  </div>
+</footer>
+
+<script>
+// On the live site, clicking a video thumbnail plays it in place.
+// Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
+if (location.protocol.startsWith("http")) {
+  document.querySelectorAll("a.yt").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var box = document.createElement("div");
+      box.className = "yt";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.title = a.getAttribute("aria-label") || "YouTube video";
+      box.appendChild(f);
+      a.replaceWith(box);
+    });
+  });
+}
+</script>
+</body>
+</html>

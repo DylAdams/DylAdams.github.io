@@ -1,0 +1,24 @@
+/* Landing page only. Loaded after style.css by index.html. */
+
+/* CESyL pink for the landing page (project cards keep their own colors) */
+.home { --accent: #FF6978; --accent-ink: #d51b50; --accent-tint: #feeaf3; }
+
+/* header stays put while the page scrolls underneath it */
+.home .site-header { position: sticky; top: 0; z-index: 10; background: var(--paper);
+  box-shadow: 0 1px 0 var(--rule); }
+
+/* The intro fills the first screen. The bio inside it is sticky: it parks in
+   the middle of the screen (the script sets --hero-top) while the projects
+   scroll up under it, and moves up with them once the intro runs out. Same
+   space above and below the bio, so it's dead-center when parked. */
+.intro { min-height: calc(100vh - 66px); min-height: calc(100svh - 66px); padding: 3.75rem 0; }
+.intro .hero { width: 100%; position: sticky; top: var(--hero-top, calc(66px + 3.75rem)); }
+
+/* when jumping to the projects, stop just below the sticky header */
+.work { scroll-margin-top: 66px; }
+
+/* Scrolling is locked on a fresh visit until "See my projects" is pressed.
+   The scrollbar's space is always reserved, so unlocking doesn't shift the
+   page sideways. */
+html { scrollbar-gutter: stable; }
+html.locked { overflow: hidden; }

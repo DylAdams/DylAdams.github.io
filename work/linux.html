@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Linux — Dylan Adams</title>
+  <meta name="description" content="Dylan Adams dual-boots Arch Linux with a custom Hyprland desktop on his laptop.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="p-linux">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Dylan Adams</a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#projects" aria-current="page">Work</a>
+      <a href="../about.html">About</a>
+      <a href="mailto:dadams@college.harvard.edu">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap crumb"><a href="../index.html#projects">← All work</a></div>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="label">Software</p>
+      <h1>Learning Linux</h1>
+      <p class="lede">Dual-booting Arch Linux on my laptop and configuring my own desktop.</p>
+      <dl class="facts-row">
+        <div><dt>When</dt><dd>Fall 2026 – now</dd></div>
+        <div><dt>Running on</dt><dd>ASUS ROG Zephyrus G14</dd></div>
+        <div><dt>Built with</dt><dd>Arch Linux, Hyprland, GRUB, git</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <article class="article">
+    <div class="wrap">
+      <p>I’ve used Linux before on RasPis and an Ubuntu home server, but always headless and for one job at a time. This fall, I installed Arch Linux next to Windows on my laptop to learn it properly. I plan on hopefully using Arch for coding, schoolwork, and browsing, and keeping Windows for Ableton and video editing.</p>
+
+      <div class="callout"><p>I’m using Claude as a tutor for this project: it explains each command and setting, and its risks, before I change anything, and helps me maintain a field guide of commands and fixes. Part of the goal is learning how to learn with a tool like this.</p></div>
+
+      <table class="spec">
+        <tr><th>Laptop</th><td>ASUS ROG Zephyrus G14: Intel Core Ultra 9, NVIDIA RTX 5070 Ti (hybrid graphics), 1 TB NVMe</td></tr>
+        <tr><th>Disk</th><td>Windows (BitLocker on) and a 98 GB Arch partition on the same drive, sharing one EFI partition</td></tr>
+        <tr><th>Filesystem</th><td>btrfs with separate subvolumes for <code>/</code>, <code>/home</code>, and <code>/var/log</code>, zstd compression</td></tr>
+        <tr><th>Boot</th><td>GRUB with a custom menu</td></tr>
+        <tr><th>Desktop</th><td>Hyprland (Lua config), Waybar, kitty, fuzzel, mako, hyprlock, hypridle</td></tr>
+      </table>
+
+      <h3>Dual-booting with BitLocker</h3>
+      <p>Before installing, I shrank the Windows partition, disabled Fast Startup, and suspended BitLocker to avoid a recovery lock. GRUB uses a custom three-entry menu (Arch, Windows, firmware setup). Instead of chainloading Windows, the Windows entry sets the firmware’s one-time BootNext option and reboots, so BitLocker never sees a changed boot path. A <code>win</code> command does the same from the shell, and Arch puts itself back first in the boot order whenever it starts.</p>
+
+      <h3>Debugging the GPU</h3>
+      <p>The hardest problem was a black screen at boot: the Intel GPU drives the displays, but the NVIDIA driver was claiming the console on a GPU with no screen attached. The kernel option <code>nvidia_drm.fbdev=0</code> fixed it. A second black screen came from forcing a 2560×1440 boot resolution on the 2880×1800 panel. G-Helper’s Eco mode in Windows also powers the NVIDIA card off entirely, hiding it from the Linux driver.</p>
+      <p>The clock was also four hours behind, since Windows keeps the hardware clock in local time and Linux assumes UTC. I fixed it with network time sync in Arch and a registry setting that switches Windows to UTC.</p>
+
+      <h3>The desktop</h3>
+      <p>The desktop is built on Hyprland across the laptop screen and an external 1440p monitor, with Waybar, kitty, fuzzel, and mako. hyprlock doubles as the login screen. Harvard’s certificate-based Wi-Fi also took some setup.</p>
+      <p>I also wrote a theme system: each theme is a folder with a wallpaper and per-app color configs, a <code>current</code> symlink selects one, and a <code>theme</code> script swaps the link and reloads every app at once.</p>
+
+      <h3>Backups</h3>
+      <p>My dotfiles are tracked in a bare git repo pushed to a private GitHub repository, along with copies of the system files I’ve changed (GRUB, the initramfs config, and autologin). Sign-in tokens and browser data are excluded.</p>
+
+      <h3>What’s next</h3>
+      <p>A recovery USB, then encrypting the Arch partition with LUKS, then Secure Boot.</p>
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="More projects">
+    <div class="wrap"><a class="prev" href="record-player.html"><p class="label">← Previous</p><span class="t">Record player repair</span></a><a class="next" href="makerspace.html"><p class="label">Next →</p><span class="t">Empty place → Makerspace</span></a></div>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Dylan Adams · dadams@college.harvard.edu</span>
+    <span class="links"><a href="https://github.com/DylAdams">GitHub</a><a href="https://www.youtube.com/@dasma-tech">YouTube</a></span>
+  </div>
+</footer>
+
+<script>
+// On the live site, clicking a video thumbnail plays it in place.
+// Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
+if (location.protocol.startsWith("http")) {
+  document.querySelectorAll("a.yt").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var box = document.createElement("div");
+      box.className = "yt";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.title = a.getAttribute("aria-label") || "YouTube video";
+      box.appendChild(f);
+      a.replaceWith(box);
+    });
+  });
+}
+</script>
+</body>
+</html>

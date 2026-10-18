@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Record player repair — Dylan Adams</title>
+  <meta name="description" content="Dylan Adams repairs his grandparents' 1970s record player.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="p-record">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Dylan Adams</a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#projects" aria-current="page">Work</a>
+      <a href="../about.html">About</a>
+      <a href="mailto:dadams@college.harvard.edu">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap crumb"><a href="../index.html#projects">← All work</a></div>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="label">Hardware</p>
+      <h1>Record player repair</h1>
+      <p class="lede">Repairing my grandparents’ turntable from the 70s.</p>
+      <dl class="facts-row">
+        <div><dt>When</dt><dd>Spring 2023</dd></div>
+        <div><dt>Model</dt><dd>BSR 2310-X</dd></div>
+        <div><dt>Links</dt><dd><a href="https://youtu.be/OfftXQWSyrU">Repair video</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <article class="article">
+    <div class="wrap">
+      <p>In spring 2023, I asked my grandparents if they happened to have a record player I could use before i went and bought a new one. They offered me a 1970s BSR turntable that they dug up from their basement, but it was in rough condition, so I repaired it and documented the process on my YouTube channel.</p>
+
+      <h3>Initial condition</h3>
+      <p>The power cable, the RCA cables, and the stylus were all rusted, and records skipped constantly. The platter was also slow to start, though it ran normally after a push.</p>
+
+      <h3>The repair</h3>
+      <ol>
+        <li><b>Cables.</b> I soaked the power and RCA cables in vinegar to remove the rust.</li>
+        <li><b>Stylus.</b> I ordered a replacement stylus, but the BSR’s arm head uses a proprietary (or at least non-standard) screw spacing for mounting it. I designed and 3D printed a custom arm head to fit the new stylus, then moved the signal wires over from the old one.</li>
+        <li><b>Calibration.</b> I adjusted the arm’s spring tension so the stylus would neither skate across the record nor dig into the groove.</li>
+      </ol>
+      <p>With the new stylus installed and calibrated, the skipping stopped and the turntable played reliably.</p>
+
+      <h3>What I learned</h3>
+      <p>This project was my introduction to audio hardware, from RCA connections to the full signal chain and why each stage is needed:</p>
+      <div class="flow">
+        <div><b>Stylus</b>Converts the motion of the record’s groove into a very small electrical signal.<span class="link">→ RCA cables</span></div>
+        <div><b>Preamp</b>Boosts that signal to line level, the standard level other audio gear expects.<span class="link">→ line level</span></div>
+        <div><b>Amp</b>Provides the power needed to drive a speaker.<span class="link">→ speaker wire</span></div>
+        <div><b>Speakers</b>Passive speakers need an external amp; powered speakers have one built in, and some include a preamp as well.<span class="link">→ sound</span></div>
+      </div>
+      <p>It was an eye-opening introduction to the audio world, and an interest I’ve kept building on since.</p>
+
+      <h3>Troubleshooting a buzz</h3>
+      <p>Later, I realized a loud buzz had been playing over every record. I isolated it by removing components from the signal chain one at a time, and traced it to a poor ground connection in the wires at the stylus head. Reseating those wires eliminated the buzz.</p>
+
+      <h3>Today</h3>
+      <p>The turntable is in regular use in my basement workspace, and my collection has grown from a few records to several dozen albums. This project's results have seen constant use since I finished the repair. I love listening to albums on vinyl, and value how vinyl encourages listening to an album as a whole rather than promoting the shuffling of individual songs on streaming services.</p>
+
+      <h3>Video</h3>
+      <a class="yt" href="https://www.youtube.com/watch?v=OfftXQWSyrU" data-id="OfftXQWSyrU" target="_blank" rel="noopener" aria-label="Repairing A 70s Record Player"><img src="https://img.youtube.com/vi/OfftXQWSyrU/hqdefault.jpg" alt="Thumbnail: Repairing A 70s Record Player" loading="lazy"><span class="yt-play">▶ Play on YouTube</span></a>
+      <ul class="chapters">
+          <li><a href="https://youtu.be/OfftXQWSyrU?t=55">00:55</a>Initial observations</li>
+          <li><a href="https://youtu.be/OfftXQWSyrU?t=150">02:30</a>Speaker setup</li>
+          <li><a href="https://youtu.be/OfftXQWSyrU?t=366">06:06</a>Needle replacement</li>
+          <li><a href="https://youtu.be/OfftXQWSyrU?t=510">08:30</a>Swapping out cords</li>
+          <li><a href="https://youtu.be/OfftXQWSyrU?t=563">09:23</a>Final product</li>
+      </ul>
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="More projects">
+    <div class="wrap"><a class="prev" href="bobbert.html"><p class="label">← Previous</p><span class="t">Bobbert</span></a><a class="next" href="linux.html"><p class="label">Next →</p><span class="t">Learning Linux</span></a></div>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Dylan Adams · dadams@college.harvard.edu</span>
+    <span class="links"><a href="https://github.com/DylAdams">GitHub</a><a href="https://www.youtube.com/@dasma-tech">YouTube</a></span>
+  </div>
+</footer>
+
+<script>
+// On the live site, clicking a video thumbnail plays it in place.
+// Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
+if (location.protocol.startsWith("http")) {
+  document.querySelectorAll("a.yt").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var box = document.createElement("div");
+      box.className = "yt";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.title = a.getAttribute("aria-label") || "YouTube video";
+      box.appendChild(f);
+      a.replaceWith(box);
+    });
+  });
+}
+</script>
+</body>
+</html>

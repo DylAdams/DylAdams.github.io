@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dylan Adams</title>
+  <meta name="description" content="Dylan Adams is an electrical engineering student at Harvard who builds hardware and software for making music.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+  <script>
+  // Runs before anything is drawn: a fresh visit starts on the bio alone, with
+  // scrolling locked until "See my projects" is pressed. Coming back from a
+  // project (Back button or a #projects link) doesn't lock.
+  (function () {
+    var nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+    if (!(nav && nav.type === "back_forward") && !location.hash) document.documentElement.classList.add("locked");
+  })();
+  </script>
+</head>
+<body class="home">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Dylan Adams</a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Work</a>
+      <a href="about.html">About</a>
+      <a href="mailto:dadams@college.harvard.edu">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <div class="wrap hero">
+      <img class="hero-photo" src="images/portrait.jpg" alt="Dylan Adams">
+      <div>
+        <h1>Hi, I’m Dylan!</h1>
+        <p class="lede">I’m a first-year at Harvard studying electrical engineering, and I love everything music and computers! I usually pick up a new skill by building something with it, then posting what I learned for people to see and learn from it too.</p>
+        <div class="buttons">
+          <a class="btn primary" href="#work">See my projects</a>
+          <a class="btn" href="about.html">More about me</a>
+          <a class="btn" href="mailto:dadams@college.harvard.edu">Contact me</a>
+          <a class="btn" href="Dylan-Adams-Resume.pdf" download>Download my resume</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="wrap">
+      <h2 class="section-title">Projects</h2>
+      <div class="cards">
+        <a class="card featured p-cesyl" href="work/cesyl.html">
+          <div class="card-art"><img src="images/cesyl-lit-keyboard.jpg" alt="CESyL’s panel lit up in rows of colored LEDs, next to a keyboard"></div>
+          <div class="card-body">
+            <p class="label">2023 – 2025</p>
+            <h2>CESyL</h2>
+            <p>A synthesizer I designed and built from scratch, with 55 encoders, about 300 RGB LEDs, three custom PCBs, and a Teensy and RasPi running it all.</p>
+            <span class="card-meta">C++ · Python · circuit design · embedded systems</span>
+          </div>
+        </a>
+
+        <a class="card p-bobbert" href="work/bobbert.html">
+          <div class="card-art"><span class="glyph">!play</span></div>
+          <div class="card-body">
+            <p class="label">2022 · ongoing</p>
+            <h2>Bobbert</h2>
+            <p>An async Python Discord bot that streams music into voice channels for my friends.</p>
+            <span class="card-meta">Python · asyncio · ffmpeg</span>
+          </div>
+        </a>
+
+        <a class="card p-record" href="work/record-player.html">
+          <div class="card-art"><span class="glyph">33⅓</span></div>
+          <div class="card-body">
+            <p class="label">2023</p>
+            <h2>Record player repair</h2>
+            <p>Repairing my grandparents’ turntable from the 70s.</p>
+            <span class="card-meta">audio hardware</span>
+          </div>
+        </a>
+
+        <a class="card p-linux" href="work/linux.html">
+          <div class="card-art"><span class="glyph">~/</span></div>
+          <div class="card-body">
+            <p class="label">2026 · in progress</p>
+            <h2>Learning Linux</h2>
+            <p>Dual-booting Arch on my laptop and configuring my own desktop, with Claude as a tutor.</p>
+            <span class="card-meta">Arch · Hyprland · GRUB · git</span>
+          </div>
+        </a>
+
+        <a class="card p-maker" href="work/makerspace.html">
+          <div class="card-art"><span class="glyph">MAKE</span></div>
+          <div class="card-body">
+            <p class="label">2023 – 2026</p>
+            <h2>Empty place → Makerspace</h2>
+            <p>Planning, funding, and opening the makerspace at my high school.</p>
+            <span class="card-meta">Leadership · grant writing · policy</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Dylan Adams · dadams@college.harvard.edu</span>
+    <span class="links"><a href="https://github.com/DylAdams">GitHub</a><a href="https://www.youtube.com/@dasma-tech">YouTube</a></span>
+  </div>
+</footer>
+
+<script>
+// On the live site, clicking a video thumbnail plays it in place.
+// Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
+if (location.protocol.startsWith("http")) {
+  document.querySelectorAll("a.yt").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var box = document.createElement("div");
+      box.className = "yt";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.title = a.getAttribute("aria-label") || "YouTube video";
+      box.appendChild(f);
+      a.replaceWith(box);
+    });
+  });
+}
+</script>
+<script>
+// Landing. The page is one continuous scroll:
+//   - At the very top, the bio sits alone in the middle of the screen.
+//   - Scrolling down, the bio stays parked in the middle while the projects rise
+//     up underneath it; then both move up together until the bio reaches the
+//     top ("bio + projects" view). Scrolling up does the same in reverse.
+// The parking is CSS (position: sticky); this script only works out where the
+// middle is, and handles the buttons and the first-visit lock.
+//   - A fresh visit starts locked on the bio alone. The first scroll down (or
+//     "See my projects") unlocks and glides to the bio + projects view. After
+//     that, scrolling is plain and linear; "See my projects" glides to the
+//     bio + projects view from above it, or to the projects themselves.
+(function () {
+  var intro = document.querySelector(".intro");
+  if (!intro) return;
+  var hero = intro.querySelector(".hero");
+  var work = document.getElementById("work");
+  var root = document.documentElement;
+  var HEADER = 66;
+
+  function padTop() { return parseFloat(getComputedStyle(intro).paddingTop) || 0; }
+  function padBottom() { return parseFloat(getComputedStyle(intro).paddingBottom) || 0; }
+  // Where the bio parks: centered on the whole window, then lifted by 2% of
+  // the window height (true center tends to look a little low). Never higher
+  // than its normal spot just under the header.
+  function place() {
+    var spare = window.innerHeight - HEADER - hero.offsetHeight;
+    var centered = (window.innerHeight - hero.offsetHeight) / 2 - window.innerHeight * 0.02;
+    var top = Math.max(HEADER + padTop(), centered);
+    intro.style.setProperty("--hero-top", top + "px");
+    return spare;
+  }
+  // Scroll position of the "bio + projects" view: bio at the top, projects below.
+  function bioProjectsY() {
+    var workTop = work.getBoundingClientRect().top + window.scrollY;
+    return Math.max(0, workTop - padBottom() - hero.offsetHeight - padTop() - HEADER);
+  }
+  function projectsY() { return work.getBoundingClientRect().top + window.scrollY - HEADER; }
+  function jumpTo(y) {
+    var prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto"; window.scrollTo(0, y); root.style.scrollBehavior = prev;
+  }
+
+  var spare = place();
+  window.addEventListener("resize", place);
+  // On screens where the bio already fills the view (phones), skip the lock.
+  if (spare < 160) root.classList.remove("locked");
+
+  // Coming back from a project lands on the bio + projects view.
+  var nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+  var fromProject = (nav && nav.type === "back_forward") || location.hash === "#projects";
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (location.hash === "#projects") history.replaceState(null, "", location.pathname);
+  if (fromProject) jumpTo(bioProjectsY()); else if (!location.hash) jumpTo(0);
+  // Back can also restore the page from memory without rerunning this script.
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted) { root.classList.remove("locked"); jumpTo(bioProjectsY()); }
+  });
+
+  // Glide smoothly to a scroll position. While gliding, and until the scroll
+  // gesture that started it has ended (a short pause between wheel events),
+  // extra scrolling is ignored so it can't cut the glide short or overshoot.
+  var gliding = false, swallowing = false, lastWheel = 0;
+  function glide(target) {
+    root.classList.remove("locked");
+    gliding = swallowing = true;
+    window.scrollTo({ top: target, behavior: "smooth" });
+    var start = performance.now();
+    (function check() {
+      if (Math.abs(window.scrollY - target) < 2 || performance.now() - start > 1500) { gliding = false; return; }
+      requestAnimationFrame(check);
+    })();
+  }
+  function seeProjects() {
+    var mid = bioProjectsY();
+    // Above the bio + projects view: go there. Otherwise (or on small screens,
+    // where the two views are nearly the same): go to the projects.
+    glide((place() >= 160 && window.scrollY < mid - 4) ? mid : projectsY());
+  }
+  function isLocked() { return root.classList.contains("locked"); }
+
+  window.addEventListener("wheel", function (e) {
+    var now = performance.now(), newGesture = now - lastWheel > 150;
+    lastWheel = now;
+    if (swallowing && !gliding && newGesture) swallowing = false;
+    if (swallowing) { e.preventDefault(); return; }
+    // First scroll down on the locked bio: same as the button.
+    if (isLocked() && e.deltaY > 0) { e.preventDefault(); seeProjects(); }
+  }, { passive: false });
+
+  var y0 = null;
+  window.addEventListener("touchstart", function (e) {
+    y0 = e.touches[0].clientY;
+    if (!gliding) swallowing = false;
+  }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    if (swallowing) { e.preventDefault(); return; }
+    if (isLocked() && y0 !== null && y0 - e.touches[0].clientY > 20) { e.preventDefault(); seeProjects(); }
+  }, { passive: false });
+
+  window.addEventListener("keydown", function (e) {
+    if (isLocked() && ["ArrowDown", "PageDown", " ", "End"].indexOf(e.key) > -1) { e.preventDefault(); seeProjects(); }
+  });
+
+  document.querySelector('.btn[href="#work"]').addEventListener("click", function (e) {
+    e.preventDefault();
+    seeProjects();
+  });
+})();
+</script>
+</body>
+</html>

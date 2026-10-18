@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CESyL — Dylan Adams</title>
+  <meta name="description" content="CESyL is a synthesizer Dylan Adams designed and built from scratch with custom PCBs, C++ firmware, and Python.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="p-cesyl">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Dylan Adams</a>
+    <nav class="nav" aria-label="Main">
+      <a href="../index.html#projects" aria-current="page">Work</a>
+      <a href="../about.html">About</a>
+      <a href="mailto:dadams@college.harvard.edu">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap crumb"><a href="../index.html#projects">← All work</a></div>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="label">Hardware · firmware · software</p>
+      <h1>CESyL</h1>
+      <p class="lede">Custom Engineered Synthesizer and Lightbox ("SEE-sul"): a digital synth I designed and built from scratch.</p>
+      <dl class="facts-row">
+        <div><dt>When</dt><dd>June 2023 – May 2025</dd></div>
+        <div><dt>Built with</dt><dd>Teensy 4.1, RasPi 4, C++, Python, Fusion 360</dd></div>
+        <div><dt>Links</dt><dd><a href="https://github.com/DylAdams/CESyL">Code</a> · <a href="https://youtu.be/WVpbPrM2bhM">Build video</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <article class="article">
+    <div class="wrap">
+      <p>In 2023, I wanted a synth with physical knobs that I could actually play and perform with outside of my basement. Everything I found on the market was either over my budget or too limited to be worth it, so I decided to build my own. <br><br>I estimated three months; it took about two years.</p>
+
+      <figure class="hero-fig">
+        <img src="../images/cesyl-lit-keyboard.jpg" alt="CESyL's panel lit up in rows of colored LEDs, next to a keyboard">
+        <figcaption>CESyL all lit up, January 2025</figcaption>
+      </figure>
+
+      <h3>System overview</h3>
+      <p>CESyL is two computers in a wooden box. The Teensy handles everything physical, the RasPi handles everything musical, and a Python program I wrote gets the two talking.</p>
+
+      <div class="flow">
+        <div><b>Panel</b>In: 55 push-button rotary encoders and 6 buttons. <br><br>Out: about 300 RGB LEDs, four around each encoder.<span class="link">→ shift registers</span></div>
+        <div><b>Teensy 4.1</b>Arduino compatible board running about 500 lines of C++. Scans every input, decodes each encoder’s Gray code, and drives 900+ LED channels with software PWM.<span class="link">→ USB serial</span></div>
+        <div><b>RasPi 4</b>Headless, running about 1,200 lines of multithreaded Python. Maps each encoder to a Surge parameter and calculates every LED’s color and brightness.<span class="link">⇄ OSC over UDP</span></div>
+        <div><b>Surge XT</b>Open-source synth engine running without its GUI. Reports patch and parameter changes back, so the LEDs always show real values.<span class="link">→ audio out</span></div>
+      </div>
+
+      <div class="pair figs">
+        <figure><img src="../images/cesyl-layout-sketch.jpg" alt="Hand-drawn plan of the panel with rows of labeled knobs"><figcaption>The first panel sketch, laid out to match Surge’s sections</figcaption></figure>
+        <figure><img class="contain" src="../images/cesyl-fusion.jpg" alt="3D model of the enclosure in Fusion 360"><figcaption>Enclosure model in Fusion 360</figcaption></figure>
+      </div>
+
+      <h3>Hardware</h3>
+      <p>The first problem: the Teensy only has about 40 I/O pins, and the panel needed over 300 inputs and 900 outputs. I went with chained shift registers instead of multiplexers, so each chain only needs three pins (data, shift clock, and latch). To keep the wiring manageable, I designed three PCBs in Fusion 360 and had them made by JLCPCB, each in its own color so I could tell them apart at a glance:</p>
+
+      <div class="trio figs">
+        <figure><img src="../images/pcb-knob.jpg" alt="Small purple circuit board holding one knob"><figcaption>Purple: 1 encoder + 4 RGB LEDs (~50)</figcaption></figure>
+        <figure><img src="../images/pcb-output.jpg" alt="Black circuit board with three chip sockets"><figcaption>Black: 3 output shift registers (~30)</figcaption></figure>
+        <figure><img src="../images/pcb-input.jpg" alt="Yellow circuit board with input shift registers"><figcaption>Yellow: 4 input shift registers (6)</figcaption></figure>
+      </div>
+
+      <p>The numbers work out nicely. Three output registers give 24 outputs, which is exactly eight RGB LEDs, so each black board drives two purple boards. Each yellow board reads about ten encoders, which splits the panel into six modules that I could build and test one at a time.</p>
+      <p>Shift registers can only switch an output fully on or off, which would leave each LED with only eight colors. So the firmware uses 5-bit software PWM: it splits each refresh into 32 time slices and turns each color channel on for some fraction of them. That gives every channel 32 brightness levels.</p>
+
+      <figure><img src="../images/cesyl-first-leds.jpg" alt="The first few knobs mounted in the wooden panel, with their RGB LEDs glowing in different colors"><figcaption>The first LEDs lighting up through the panel, January 2024</figcaption></figure>
+
+      <h3>Firmware and serial protocol</h3>
+      <p>The Teensy and RasPi trade one line of text per update over USB serial. The RasPi sends every LED value (periods between LEDs, a vertical bar between modules, and a newline at the end), and the Teensy answers with the current encoder counts and button states in the same format. Since each side waits for the other to reply, neither one can flood the other with data.</p>
+
+      <h3>Software</h3>
+      <p>Rather than hard-coding every control, I defined them all in a 1,243-line JSON file. Each encoder’s entry lists its section (filter, LFO, oscillator, FX, and so on), the OSC address it controls in Surge, how its LEDs behave, and what its push button does. That way, adding a feature usually meant editing data instead of rewriting code.</p>
+      <ul>
+        <li><b>Virtual encoders.</b> One physical encoder can hold several parameters, and its button switches between them. That’s how 55 encoders cover Surge’s two scenes, 12 LFOs, 8 macros, and the FX bank.</li>
+        <li><b>LED behaviors.</b> The LEDs use a few reusable modes: a ring that fills from the left for normal parameters, one that fills from the center for parameters that go negative, a solid color, and a binary count. Each section gets its own color from an 11-color palette.</li>
+        <li><b>Modulation mode.</b> Encoders can switch to editing modulation depth instead of the parameter itself, and the LEDs show which modulation sources are active.</li>
+        <li><b>Two-way sync.</b> On startup, the RasPi asks Surge for the current patch, and it listens for <code>/param</code>, <code>/patch</code>, and <code>/mod</code> messages from then on, so loading a new sound updates the whole panel.</li>
+        <li><b>Startup.</b> A boot script launches everything and detects any USB keyboard plugged into the side, so CESyL works as soon as it’s powered on.</li>
+      </ul>
+      <figure><img src="../images/cesyl-software-test.jpg" alt="CESyL's panel lit up on a desk in front of monitors showing code and Surge XT"><figcaption>Testing the rewritten software against Surge, October 2024</figcaption></figure>
+
+      <p>I got the first two encoders working in October 2023. In fall 2024, I rewrote the software from the ground up and brought it back one section at a time: filter, envelopes, LFOs, mixer, and waveshaper first, then the FX bank and oscillators. Along the way, some OSC messages weren’t arriving in time, which took a while to debug. Macros and modulation came last, in December 2024.</p>
+
+      <h3>Building it</h3>
+      <p>I prototyped every circuit on a breadboard before soldering anything, then built and tested in stages: single boards, then modules, then the full system. In all, that came to about 2,500 wires and over 10,000 solder joints. Near the end, the Teensy needed external power but also had to send data to the RasPi through that same USB port, so I modified a USB cable to split its power and data lines, letting one supply power both computers. The enclosure is a wooden frame with laser-cut panels that I made at my local library’s makerspace.</p>
+
+      <div class="pair figs">
+        <figure><img src="../images/cesyl-rats-nest.jpg" alt="A dense tangle of wires and glowing LEDs before the box was closed"><figcaption>All of the wiring, before the box went on</figcaption></figure>
+        <figure><img src="../images/cesyl-wiring-inside.jpg" alt="The open side of the wooden frame, packed with colored wires under the knob panel"><figcaption>…and after, right before the side panels went on</figcaption></figure>
+      </div>
+      <div class="pair figs">
+        <figure><img src="../images/cesyl-usb-split.jpg" alt="Hands peeling back the jacket of a USB cable to separate its wires"><figcaption>Splitting the USB cable’s power and data lines</figcaption></figure>
+        <figure><img src="../images/cesyl-panels.jpg" alt="Laser-cut wooden panels engraved with the CESyL logo"><figcaption>Laser-cut panels with the logo</figcaption></figure>
+      </div>
+
+      <h3>Results</h3>
+      <p>CESyL works! I’ve used it for jam sessions with friends, posted videos of it, and presented it at an elementary school in my district, and it cost about a third as much as a comparable commercial synth. It isn’t perfect, though. A few LEDs flicker and some knobs occasionally stick. Both come down to my own soldering: across thousands of hand-soldered joints, a few faulty connections were bound to slip through, so the quality of those connections ended up being the bottleneck. When I wrote the project up as my AP Research paper, I concluded that for most people, buying a synth is still the better choice because of the time and reliability tradeoffs. Next, I’d like to try building an analog synth.</p>
+      <div class="pair mixed figs">
+        <figure><img src="../images/cesyl-car.jpg" alt="Dylan smiling in the driver's seat with CESyL on the passenger seat"><figcaption>Taking CESyL out of the basement for a jam session, May 2025</figcaption></figure>
+        <figure><img src="../images/cesyl-jam.jpg" alt="CESyL glowing on the floor of a living room next to a keyboard set up for a jam session"><figcaption>…and set up once we got there</figcaption></figure>
+      </div>
+
+      <p>The paper, “Designing and Constructing a Musical Synthesizer,” is 5,479 words, and I defended it in an oral presentation in spring 2026. The code is <a href="https://github.com/DylAdams/CESyL">on GitHub</a>.</p>
+
+      <h3>Build video</h3>
+      <p>The whole build, start to finish, in about an hour (timelapses included).</p>
+      <a class="yt" href="https://www.youtube.com/watch?v=WVpbPrM2bhM" data-id="WVpbPrM2bhM" target="_blank" rel="noopener" aria-label="one hour of synth talk and timelapses to cure your attention span"><img src="https://img.youtube.com/vi/WVpbPrM2bhM/hqdefault.jpg" alt="Thumbnail: one hour of synth talk and timelapses to cure your attention span" loading="lazy"><span class="yt-play">▶ Play on YouTube</span></a>
+      <ul class="chapters">
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=115">01:55</a>Synths vs. keyboards</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=185">03:05</a>First steps</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=755">12:35</a>Adding more I/O pins</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=1010">16:50</a>Custom PCBs</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=1340">22:20</a>Experimenting with pulse width</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=1688">28:08</a>Explaining the knobs</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=1850">30:50</a>Circuitry and wiring</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=2177">36:17</a>Physical build</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=2699">44:59</a>Programming</li>
+          <li><a href="https://youtu.be/WVpbPrM2bhM?t=2920">48:40</a>Seeing it work</li>
+      </ul>
+    </div>
+  </article>
+
+  <nav class="pager" aria-label="More projects">
+    <div class="wrap"><a class="next" href="bobbert.html"><p class="label">Next →</p><span class="t">Bobbert</span></a></div>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Dylan Adams · dadams@college.harvard.edu</span>
+    <span class="links"><a href="https://github.com/DylAdams">GitHub</a><a href="https://www.youtube.com/@dasma-tech">YouTube</a></span>
+  </div>
+</footer>
+
+<script>
+// On the live site, clicking a video thumbnail plays it in place.
+// Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
+if (location.protocol.startsWith("http")) {
+  document.querySelectorAll("a.yt").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var box = document.createElement("div");
+      box.className = "yt";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.title = a.getAttribute("aria-label") || "YouTube video";
+      box.appendChild(f);
+      a.replaceWith(box);
+    });
+  });
+}
+</script>
+</body>
+</html>

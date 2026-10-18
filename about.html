@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — Dylan Adams</title>
+  <meta name="description" content="About Dylan Adams: electrical engineering student at Harvard, musician, and builder.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="images/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-pink about-page">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Dylan Adams</a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html">Work</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="mailto:dadams@college.harvard.edu">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="about-one">
+  <div class="wrap about">
+    <aside>
+      <img class="portrait" src="images/portrait.jpg" alt="Dylan Adams">
+      <dl class="facts">
+        <div><dt>Studying</dt><dd>Electrical Engineering, <br>Harvard Class of 2030</dd></div>
+        <div><dt>From</dt><dd>West Grove, Pennsylvania</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:dadams@college.harvard.edu">dadams@college.harvard.edu</a></dd></div>
+      </dl>
+    </aside>
+
+    <div class="about-text">
+      <h1>About me</h1>
+      <p class="about-lead">Two things you should know about me: I love music, and I love computers.</p>
+
+      <p>I got into music production by covering songs I loved. Getting the notes right wasn’t enough, though: I wanted the same <em>sounds</em>, too. Now I write and produce my own indie rock, and I’m just as curious about how a synth or guitar pedal works on the inside as I am about the song it’s used in.</p>
+
+      <p>My projects follow a consistent pattern: “learn, create, share.” I learn something out of curiosity, build something I’ll actually use with it, and document it for others to see, usually on my YouTube channel, <a href="https://www.youtube.com/@dasma-tech">Dasma Tech</a>. That’s how I ended up repairing my grandparents’ record player, writing a music bot for my friends, and building a synthesizer from scratch.</p>
+
+      <p>In high school, I also ran the sound board for our musicals, hosted the weather segment on our morning broadcast as “Avalanche Adams,” and helped design and open the new makerspace in our building.</p>
+
+      <p>Now I’m studying electrical engineering at Harvard. Long term, I want to design consumer audio electronics: the instruments and gear musicians use. I’m also considering a secondary in neuroscience, on the computational side. I’ve kept a daily journal since eighth grade, and no amount of text captures what a moment actually felt like, which has made me curious about how the brain stores memories and thoughts.</p>
+
+      <p>I’m looking for internships in embedded systems, audio, hardware, and software. Feel free to reach out via <a href="mailto:dadams@college.harvard.edu">email</a>!</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Dylan Adams · dadams@college.harvard.edu</span>
+    <span class="links"><a href="https://github.com/DylAdams">GitHub</a><a href="https://www.youtube.com/@dasma-tech">YouTube</a></span>
+  </div>
+</footer>
+
+<script>
+// On the live site, clicking a video thumbnail plays it in place.
+// Opened as a local file, YouTube refuses embeds, so the link just opens YouTube.
+if (location.protocol.startsWith("http")) {
+  document.querySelectorAll("a.yt").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var box = document.createElement("div");
+      box.className = "yt";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + a.dataset.id + "?autoplay=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.title = a.getAttribute("aria-label") || "YouTube video";
+      box.appendChild(f);
+      a.replaceWith(box);
+    });
+  });
+}
+</script>
+</body>
+</html>
